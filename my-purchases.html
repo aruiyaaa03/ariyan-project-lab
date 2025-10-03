@@ -1,0 +1,14 @@
+<!-- File: my-purchases.html -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Purchases - ARIYAN PROJECT LAB</title><script src="https://cdn.tailwindcss.com"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script></head><body class="bg-gray-100"><nav class="bg-white shadow-md"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between h-16"><div class="flex items-center"><a href="/" class="text-2xl font-bold text-indigo-600">ARIYAN PROJECT LAB</a></div><div class="hidden md:flex items-center space-x-8" id="navbar-auth"></div></div></div></nav><main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><h1 class="text-3xl font-bold mb-6">My Purchase History</h1><div class="bg-white p-6 rounded-lg shadow-md"><table class="w-full text-left"><thead><tr class="border-b"><th class="py-2">Product Name</th><th class="py-2">Price</th><th class="py-2">Date</th><th class="py-2">Status</th><th class="py-2">Action</th></tr></thead><tbody id="purchases-table-body"><tr><td colspan="5" class="text-center py-4">Loading purchase history...</td></tr></tbody></table></div></main>
+<script src="/js/auth.js"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>{auth.onAuthStateChanged(e=>{e?db.collection("orders").where("userId","==",e.uid).orderBy("orderDate","desc").get().then(e=>{const t=document.getElementById("purchases-table-body");if(t.innerHTML="",e.empty)return void(t.innerHTML='<tr><td colspan="5" class="text-center py-4">You have not purchased any products yet.</td></tr>');e.forEach(e=>{const o=e.data(),d=o.orderDate?new Date(o.orderDate.toDate()).toLocaleDateString():"N/A",r="completed"===o.status?"bg-green-100 text-green-800":"bg-yellow-100 text-yellow-800",s="completed"===o.status?'<span class="text-sm text-gray-500">Delivered</span>':'<span class="text-sm text-gray-500">Awaiting Payment</span>';t.innerHTML+=`
+                                    <tr class="border-b">
+                                        <td class="py-3">${o.productName}</td>
+                                        <td class="py-3">৳${o.price}</td>
+                                        <td class="py-3">${d}</td>
+                                        <td class="py-3"><span class="px-2 py-1 text-xs font-semibold rounded-full ${r}">${o.status}</span></td>
+                                        <td class="py-3">${s}</td>
+                                    </tr>
+                                `})}):window.location.href="/login.html"})});</script>
+</body></html>

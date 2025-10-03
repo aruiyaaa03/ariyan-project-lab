@@ -1,0 +1,19 @@
+<!-- File: product-detail.html -->
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Product Details - ARIYAN PROJECT LAB</title><script src="https://cdn.tailwindcss.com"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script></head><body class="bg-gray-100"><nav class="bg-white shadow-md"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex justify-between h-16"><div class="flex items-center"><a href="/" class="text-2xl font-bold text-indigo-600">ARIYAN PROJECT LAB</a></div><div class="hidden md:flex items-center space-x-8" id="navbar-auth"></div></div></div></nav><main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"><div id="product-detail-container" class="bg-white p-8 rounded-lg shadow-md"><p class="text-center">Loading product details...</p></div></main><footer class="bg-gray-800 text-white py-8 text-center"><p>© 2023 ARIYAN PROJECT LAB. All rights reserved.</p></footer>
+<script src="/js/auth.js"></script>
+<script>document.addEventListener('DOMContentLoaded',function(){const e=new URLSearchParams(window.location.search).get("id");if(!e)return void(document.getElementById("product-detail-container").innerHTML='<p class="text-center text-red-500">No product ID provided.</p>');db.collection("products").doc(e).get().then(t=>{if(t.exists){const n=t.data();document.getElementById("product-detail-container").innerHTML=`
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <img src="${n.imageUrl||"https://via.placeholder.com/600x400"}" alt="${n.name}" class="w-full h-auto rounded-lg shadow-sm">
+                                </div>
+                                <div>
+                                    <h1 class="text-4xl font-bold mb-4">${n.name}</h1>
+                                    <p class="text-gray-500 mb-4">Category: ${n.category}</p>
+                                    <p class="text-4xl font-bold text-indigo-600 mb-6">৳${n.price}</p>
+                                    <p class="text-gray-700 leading-relaxed mb-6">${n.description}</p>
+                                    <a href="/checkout.html?id=${t.id}" class="w-full text-center px-6 py-3 bg-green-600 text-white rounded-md font-semibold text-lg hover:bg-green-700">Buy Now</a>
+                                </div>
+                            </div>
+                        `}else document.getElementById("product-detail-container").innerHTML='<p class="text-center text-red-500">Product not found.</p>'}).catch(e=>console.error("Error fetching product:",e))});</script>
+</body></html>
